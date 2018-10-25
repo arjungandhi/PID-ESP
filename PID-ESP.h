@@ -13,13 +13,18 @@ class PID {
 
   public:
 
-    PID(double max,double min, double Kp, double Ki, double Kd);
+    PID(double max,double min, double kp, double ki, double kd);
     double calculate(double target, double error);
-    void setMax(double value);
-    void setMin(double value);
+    void setLimits(double min,double max);
     void setKp(double value);
     void setKi(double value);
     void setKd(double value);
+
+    double getKp();
+    double getKi();
+    double getKd();
+    
+
 
 
 };
