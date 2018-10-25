@@ -23,7 +23,14 @@ class PID {
     double getKp();
     double getKi();
     double getKd();
-    
+
+  private:
+    double max;
+    double min;
+    double kp;
+    double ki;
+    double kd;
+
 
 
 
