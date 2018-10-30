@@ -34,8 +34,8 @@
 *.app
 
 ### PlatformIO ###
-.ini
-.pioenvs
-.piolibdeps
-.clang_complete
-.gcc-flags.json
+*.ini
+*.pioenvs
+*.piolibdeps
+*.clang_complete
+*.gcc-flags.json
