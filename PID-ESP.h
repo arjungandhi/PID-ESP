@@ -15,7 +15,7 @@ class PID {
 
     PID(double max,double min, double kp, double ki, double kd,unsigned long startTime);
     double calculate(double error);
-    void setLimits(double min,double max);
+    void setLimits(double minVal,double maxVal);
     void setKp(double value);
     void setKi(double value);
     void setKd(double value);

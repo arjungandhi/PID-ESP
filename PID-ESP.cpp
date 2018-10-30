@@ -15,7 +15,7 @@
 
 PID::PID(double max,double min, double kp, double ki, double kd,unsigned long startTime){
   setLimits(min, max);
-  setKp(kd);
+  setKp(kp);
   setKi(ki);
   setKd(kd);
   setStartTime(startTime);
@@ -31,11 +31,22 @@ double PID::calculate(double error){
     long timeChange=millis()-previousTime;
     previousTime=millis();
     return calculateP(error)+calculateI(error,timeChange)+calculateD(error,timeChange);
-
 }
 
-
-/* Public Methods (...)*********************************************************
+void PID::setLimits(double minVal, double maxVal){
+    max=maxVal;
+    min=minVal;
+}
+void setKp(double value){
+  kp=value;
+}
+void setKi(double value){
+  ki=value;
+}
+void setKd(double value){
+  kd=value;
+}
+/* Private Methods (...)*********************************************************
  *    These methods are for my eyes only
  ***************************************************************************/
 double PID::calculateP(double error){
@@ -51,6 +62,4 @@ double PID::calculateD(double error,long timeChange){
   derivative =(double) (error-prevError)/timeChange;
   prevError=error;
   return kd*derivative;
-
-
 }
