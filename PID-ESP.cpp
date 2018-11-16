@@ -13,10 +13,18 @@ public PID::PID(int kp, int ki, int kd, int maxSpeed, int minSpeed){
   lastTime = startTime;
 }
 
-public double PIDCalculate(double error)}
-return PCalc(error)+ICalc(error)+DCalc(error);
-lastTime=millis();
-oldError=error;
+public double PIDCalculate(double error){
+if((PCalc(error)+ICalc(error)+DCalc(error))<minSpeed){
+  return minSpeed;
+}
+else if((PCalc(error)+ICalc(error)+DCalc(error))>maxSpeed){
+  return maxSpeed;
+}
+else{
+  return PCalc(error)+ICalc(error)+DCalc(error);
+}
+PID.this.lastTime=millis();
+PID.this.oldError=error;
 }
 
 public void setKP(int newKP){
@@ -36,7 +44,7 @@ private double PCalc(double error){
 }
 
 private double ICalc(double error){
-  integralVal+=(error*(millis()-lastTime));
+  PID.this.integralVal+=(error*(millis()-lastTime));
   return kI*(integralVal);
 }
 

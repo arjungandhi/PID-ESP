@@ -15,6 +15,7 @@ double integralVal;
 unsigned long startTime;
 unsigned long lastTime;
 
+PID(int kp, int ki, int kd, int maxSpeed, int minSpeed)
 double PIDCalculate(double error);
 void setKP(int newKP);
 void setKI(int newKI);
