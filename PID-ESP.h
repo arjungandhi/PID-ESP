@@ -1,11 +1,3 @@
-/***************************************************************************
-  This is a library for PID control
-  Support me by giving me waffles
-  www.arjungandhi.com
-  I also take hugs
-  Written By Arjun Gandhi
-  MIT license, all text above must be included in any redistribution
- ***************************************************************************/
 #ifndef PID_H
 #define PID_H
 
@@ -13,34 +5,26 @@ class PID {
 
   public:
 
-    PID(double max,double min, double kp, double ki, double kd,unsigned long startTime);
-    double calculate(double error);
-    void setLimits(double minVal,double maxVal);
-    void setKp(double value);
-    void setKi(double value);
-    void setKd(double value);
-    void setStartTime(double value);
+int kp;
+int ki;
+int kd;
+int maxSpeed;
+int minSpeed;
+double oldError;
+double integralVal;
+unsigned long startTime;
+unsigned long lastTime;
 
-    double getKp();
-    double getKi();
-    double getKd();
+PID(int kp, int ki, int kd, int maxSpeed, int minSpeed)
+double PIDCalculate(double error);
+void setKP(int newKP);
+void setKI(int newKI);
+void setKD(int newKD);
 
-  private:
-    double calculateP(double error);
-    double calculateI(double error,long timeChange);
-    double calculateD(double error,long timeChange);
-    double max;
-    double min;
-    double kp;
-    double ki;
-    double kd;
-    double integral;
-    double derivative;
-    long previousTime;
-    double prevError;
-
-
-
+private:
+  double PCalc(double error);
+  double ICalc(double error);
+  double DCalc(double error);
 
 };
 

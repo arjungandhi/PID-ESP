@@ -1,65 +1,53 @@
-/***************************************************************************
-  This is a library for PID control
-  Support me by giving me waffles
-  www.arjungandhi.com
-  I also take hugs
-  Written By Arjun Gandhi
-  MIT license, all text above must be included in any redistribution
- ***************************************************************************/
-#include <Arduino.h>
+#include "Arduino.h"
 #include "PID-ESP.h"
 
-/*Constructor (...)*********************************************************
- *    The parameters spec
- ***************************************************************************/
-
-PID::PID(double max,double min, double kp, double ki, double kd,unsigned long startTime){
-  setLimits(min, max);
-  setKp(kp);
-  setKi(ki);
-  setKd(kd);
-  setStartTime(startTime);
-  prevError=0; //first time sets previous error to 0 cause duh
-  integral=0;
+public PID::PID(int kp, int ki, int kd, int maxSpeed, int minSpeed){
+  this.kp = kp;
+  this.ki = ki;
+  this.kd = kd;
+  this.maxSpeed = maxSpeed;
+  this.minSpeed = minSpeed;
+  this.startTime = millis();
+  oldError = 0;
+  integralVal = 0;
+  lastTime = startTime;
 }
 
-/* Public Methods (...)*********************************************************
- *    These are the methods for every one to play with
- ***************************************************************************/
-
-double PID::calculate(double error){
-    long timeChange=millis()-previousTime;
-    previousTime=millis();
-    return calculateP(error)+calculateI(error,timeChange)+calculateD(error,timeChange);
+public double PIDCalculate(double error){
+if((PCalc(error)+ICalc(error)+DCalc(error))<minSpeed){
+  return minSpeed;
+}
+else if((PCalc(error)+ICalc(error)+DCalc(error))>maxSpeed){
+  return maxSpeed;
+}
+else{
+  return PCalc(error)+ICalc(error)+DCalc(error);
+}
+PID.this.lastTime=millis();
+PID.this.oldError=error;
 }
 
-void PID::setLimits(double minVal, double maxVal){
-    max=maxVal;
-    min=minVal;
+public void setKP(int newKP){
+  PID.this.kp = newKP;
 }
-void setKp(double value){
-  kp=value;
+
+public void setKI(int newKI){
+  PID.this.ki = newKi;
 }
-void setKi(double value){
-  ki=value;
+
+public void setKD(int newKD){
+  PID.this.kd = newKD;
 }
-void setKd(double value){
-  kd=value;
-}
-/* Private Methods (...)*********************************************************
- *    These methods are for my eyes only
- ***************************************************************************/
-double PID::calculateP(double error){
+
+private double PCalc(double error){
   return kp*error;
 }
 
-double PID::calculateI(double error,long timeChange){
-  integral +=(double) error * timeChange;
-  return ki*integral;
+private double ICalc(double error){
+  PID.this.integralVal+=(error*(millis()-lastTime));
+  return kI*(integralVal);
 }
 
-double PID::calculateD(double error,long timeChange){
-  derivative =(double) (error-prevError)/timeChange;
-  prevError=error;
-  return kd*derivative;
+private double DCalc(double error){
+  return kD*((error-oldError)/(millis()-lastTime));
 }
